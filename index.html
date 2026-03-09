@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VHV Stealth Tool Setup</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #1e1e1e;
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+        }
+        h2 {
+            text-align: center;
+            color: #1a237e;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0;
+            text-shadow: 0 0 10px rgba(26, 35, 126, 0.5);
+        }
+        .drag-zone {
+            text-align: center;
+            padding: 30px 20px;
+            border: 2px dashed #1a237e;
+            border-radius: 8px;
+            background-color: rgba(26, 35, 126, 0.05);
+            margin-bottom: 20px;
+        }
+        .bookmark-btn {
+            display: inline-block;
+            background-color: #1a237e;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: grab;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .bookmark-btn:hover {
+            background-color: #283593;
+            transform: translateY(-2px);
+        }
+        .bookmark-btn:active {
+            cursor: grabbing;
+        }
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+            color: #888;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        .divider::before, .divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background-color: #444;
+        }
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+        textarea {
+            width: 100%;
+            height: 120px;
+            background-color: #0a0a0a;
+            color: #4caf50;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 10px;
+            font-family: "Consolas", monospace;
+            font-size: 11px;
+            resize: none;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .copy-btn {
+            width: 100%;
+            background-color: #333;
+            color: white;
+            border: 1px solid #444;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .copy-btn:hover {
+            background-color: #444;
+            border-color: #555;
+        }
+        .copy-btn.success {
+            background-color: #2e7d32;
+            border-color: #1b5e20;
+        }
+        ul {
+            color: #aaa;
+            font-size: 14px;
+            line-height: 1.6;
+            padding-left: 20px;
+        }
+        li strong {
+            color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>VHV Stealth Bookmarklet</h2>
+
+    <div class="drag-zone">
+        <p style="margin-top:0; color:#ccc; font-size: 14px;"><strong>Cách 1 (Nhanh nhất):</strong> Cầm nút xanh bên dưới và Kéo Thả nó lên "Thanh Dấu Trang" (Bookmarks Bar) của trình duyệt. <em>(Bấm Ctrl+Shift+B nếu không thấy thanh dấu trang)</em></p>
+        <a class="bookmark-btn" id="bml-link" href='javascript:(function(){try{if(window.VHV){clearInterval(VHV.fullScreenInterval);clearInterval(VHV.warningInterval)}if(VHV&&VHV.App&&VHV.App.modules){Object.values(VHV.App.modules).forEach(e=>{e.hasWarningLog=!1;e.notCheckNoticeWarning=1;e.checkLeaveTime=()=>{};e.markLeaveTime=()=>{};e.warningLog=()=>{};e.checkWarning=()=>{}})}window.onblur=null;window.onfocus=null;window.onbeforeunload=null;let e=document.querySelectorAll("p, div");for(let t of e)if(t.textContent.includes("Học sinh:")){let n=t.querySelector("b");if(n&&!n.dataset.injected){n.dataset.injected="1";let o=n.innerText;n.innerText=o+" [Đã inject]";n.style.color="#1a237e";setTimeout(()=>{n.innerText=o;n.style.color="";delete n.dataset.injected},3000);break}}let t=document.querySelector(".title-time");Object.values(VHV.App.modules||{}).filter(e=>e.items).forEach(e=>{e.items.forEach(e=>{let n=e._id||e.id,o=[];if("Choice"===e.elementType&&e.choices){let l=null;if(e.value&&"object"!=typeof e.value)l=e.value;else if(Array.isArray(e.choices)){let c=e.choices.find(e=>1==e.point||"1"==e.point);if(c)l=c.answerCode}else if("object"==typeof e.choices)for(let t in e.choices)if(1==e.choices[t].point||"1"==e.choices[t].point){l=e.choices[t].answerCode||t;break}null!==l&&o.push(`input[name*="${n}"][value="${l}"]`)}else if("OnlyTrueFalseFour"===e.elementType&&e.choices){(Array.isArray(e.choices)?e.choices:Object.values(e.choices)).forEach(e=>{let t=(e.answerTitle||"").toLowerCase();("true"===t||"false"===t)&&o.push(`input[name*="${n}"][name*="[${e.answerCode}]"][value="${t}"]`)})}else if("Textbox"===e.elementType){let l=e.value&&"object"==typeof e.value?e.value:{};if(!Object.keys(l).length&&e.choices){let i=Array.isArray(e.choices)?Object.assign({},e.choices):e.choices;for(let r in i)l[i[r].answerCode||r]=i[r].answerTitle}for(let a in l)o.push(`input[type="text"][name*="${n}"][name*="[${a}]"]`)}o.forEach(e=>{document.querySelectorAll(e).forEach(e=>{let n=e.closest("label")||e.closest(".checkCode")||e;n.dataset.vhvHoverAttached||(n.dataset.vhvHoverAttached="1",n.addEventListener("mouseenter",()=>{if(t){let e=t.innerText;e.endsWith(":")||(t.innerText=e+":")}}),n.addEventListener("mouseleave",()=>{if(t){let e=t.innerText;e.endsWith(":")&&(t.innerText=e.slice(0,-1))}}))})})})})}catch(e){console.error(e)}})();' onclick="return false;">Drag Me: VHV Stealth</a>
+    </div>
+
+    <div class="divider">Hoặc làm thủ công</div>
+
+    <p style="font-size: 14px; margin-bottom: 5px;"><strong>Cách 2:</strong> Copy mã dưới đây và tạo bookmark thủ công.</p>
+    <textarea id="code-area" readonly>javascript:(function(){try{if(window.VHV){clearInterval(VHV.fullScreenInterval);clearInterval(VHV.warningInterval)}if(VHV&&VHV.App&&VHV.App.modules){Object.values(VHV.App.modules).forEach(e=>{e.hasWarningLog=!1;e.notCheckNoticeWarning=1;e.checkLeaveTime=()=>{};e.markLeaveTime=()=>{};e.warningLog=()=>{};e.checkWarning=()=>{}})}window.onblur=null;window.onfocus=null;window.onbeforeunload=null;let e=document.querySelectorAll("p, div");for(let t of e)if(t.textContent.includes("Học sinh:")){let n=t.querySelector("b");if(n&&!n.dataset.injected){n.dataset.injected="1";let o=n.innerText;n.innerText=o+" [Đã inject]";n.style.color="#1a237e";setTimeout(()=>{n.innerText=o;n.style.color="";delete n.dataset.injected},3000);break}}let t=document.querySelector(".title-time");Object.values(VHV.App.modules||{}).filter(e=>e.items).forEach(e=>{e.items.forEach(e=>{let n=e._id||e.id,o=[];if("Choice"===e.elementType&&e.choices){let l=null;if(e.value&&"object"!=typeof e.value)l=e.value;else if(Array.isArray(e.choices)){let c=e.choices.find(e=>1==e.point||"1"==e.point);if(c)l=c.answerCode}else if("object"==typeof e.choices)for(let t in e.choices)if(1==e.choices[t].point||"1"==e.choices[t].point){l=e.choices[t].answerCode||t;break}null!==l&&o.push(`input[name*="${n}"][value="${l}"]`)}else if("OnlyTrueFalseFour"===e.elementType&&e.choices){(Array.isArray(e.choices)?e.choices:Object.values(e.choices)).forEach(e=>{let t=(e.answerTitle||"").toLowerCase();("true"===t||"false"===t)&&o.push(`input[name*="${n}"][name*="[${e.answerCode}]"][value="${t}"]`)})}else if("Textbox"===e.elementType){let l=e.value&&"object"==typeof e.value?e.value:{};if(!Object.keys(l).length&&e.choices){let i=Array.isArray(e.choices)?Object.assign({},e.choices):e.choices;for(let r in i)l[i[r].answerCode||r]=i[r].answerTitle}for(let a in l)o.push(`input[type="text"][name*="${n}"][name*="[${a}]"]`)}o.forEach(e=>{document.querySelectorAll(e).forEach(e=>{let n=e.closest("label")||e.closest(".checkCode")||e;n.dataset.vhvHoverAttached||(n.dataset.vhvHoverAttached="1",n.addEventListener("mouseenter",()=>{if(t){let e=t.innerText;e.endsWith(":")||(t.innerText=e+":")}}),n.addEventListener("mouseleave",()=>{if(t){let e=t.innerText;e.endsWith(":")&&(t.innerText=e.slice(0,-1))}}))})})})})}catch(e){console.error(e)}})();</textarea>
+    <button class="copy-btn" id="copy-btn">COPY MÃ BÊN TRÊN</button>
+
+    <div style="margin-top: 30px; background: #222; padding: 15px; border-radius: 6px;">
+        <strong style="color: #1a237e;">Hướng dẫn ngụy trang:</strong>
+        <ul>
+            <li>Vào trang thi VHV, click vào dấu trang vừa tạo.</li>
+            <li>Tên của bạn sẽ hiện chữ <strong>[Đã inject]</strong> màu xanh chàm trong 3 giây. Lúc này mọi cảnh báo chuyển tab / thu nhỏ màn hình đã bị vô hiệu hóa.</li>
+            <li>Rẽ chuột lướt nhẹ qua các đáp án A,B,C,D.</li>
+            <li>Mắt liếc lên góc chữ <strong>Thời gian còn lại</strong>. Chỗ nào làm chữ đó mọc thêm dấu <strong>:</strong> (thành <em>Thời gian còn lại:</em>) thì đó chính là đáp án đúng.</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    document.getElementById('copy-btn').addEventListener('click', function() {
+        const codeArea = document.getElementById('code-area');
+        codeArea.select();
+        document.execCommand('copy');
+        
+        this.textContent = 'ĐÃ COPY THÀNH CÔNG!';
+        this.classList.add('success');
+        
+        setTimeout(() => {
+            this.textContent = 'COPY MÃ BÊN TRÊN';
+            this.classList.remove('success');
+        }, 2000);
+    });
+</script>
+
+</body>
+</html>

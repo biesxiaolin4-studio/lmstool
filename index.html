@@ -85,8 +85,8 @@
     .footer-copyright-social .col-left > p { line-height: 34px; }
 
     /* 
-     * THIẾT KẾ CSS NGỤY TRANG (STEALTH CSS)
-     * Giao diện được làm theo phong cách Light Mode của K12Online
+- THIẾT KẾ CSS NGỤY TRANG (STEALTH CSS)
+- Giao diện được làm theo phong cách Light Mode của K12Online
      */
     .stealth-wrapper {
         max-width: 760px;
@@ -105,7 +105,7 @@
     }
     .stealth-header h2 {
         margin: 0;
-        color: #1a237e; /* Màu xanh nhận diện thương hiệu K12 */
+        color: #1a237e;
         font-size: 18px;
         font-weight: 700;
         text-transform: uppercase;
@@ -235,10 +235,149 @@
     .stealth-guide li strong {
         color: #101828;
     }
+
+    /* CSS MÀN HÌNH KHÓA BẢO MẬT (SECURITY LOCK OVERLAY) */
+    body.is-locked {
+        overflow: hidden;
+    }
+    body.is-locked .region-top,
+    body.is-locked #whole-page,
+    body.is-locked .region-bottom {
+        filter: blur(8px);
+        pointer-events: none;
+        user-select: none;
+    }
+    .k12-lock-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background: rgba(16, 24, 40, 0.65);
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        transition: opacity 0.25s ease;
+    }
+    .k12-lock-overlay.hidden {
+        display: none;
+    }
+    .k12-lock-card {
+        width: 100%;
+        max-width: 400px;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 24px 48px -12px rgba(16, 24, 40, 0.25);
+        border: 1px solid #E3E5E8;
+        padding: 32px 28px;
+        text-align: center;
+    }
+    .k12-lock-card.shake {
+        animation: k12Shake 0.35s ease-in-out;
+    }
+    @keyframes k12Shake {
+        0%, 100% { transform: translateX(0); }
+        20%, 60% { transform: translateX(-8px); }
+        40%, 80% { transform: translateX(8px); }
+    }
+    .k12-lock-logo {
+        height: 52px;
+        margin: 0 auto 14px auto;
+        display: block;
+    }
+    .k12-lock-title {
+        margin: 0 0 6px 0;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a237e;
+        text-transform: uppercase;
+    }
+    .k12-lock-desc {
+        margin: 0 0 22px 0;
+        font-size: 13.5px;
+        color: #475467;
+        line-height: 1.5;
+    }
+    .k12-lock-input-group {
+        position: relative;
+        margin-bottom: 12px;
+    }
+    .k12-lock-input {
+        width: 100%;
+        height: 44px;
+        padding: 0 42px 0 14px;
+        border: 1.5px solid #D0D5DD;
+        border-radius: 10px;
+        font-size: 14px;
+        color: #101828;
+        outline: none;
+        box-sizing: border-box;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .k12-lock-input:focus {
+        border-color: #1a237e;
+        box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.12);
+    }
+    .k12-lock-input.error {
+        border-color: #D92D20;
+        box-shadow: 0 0 0 3px rgba(217, 45, 32, 0.12);
+    }
+    .k12-toggle-pw {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #667085;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px;
+    }
+    .k12-lock-error {
+        min-height: 18px;
+        margin: 0 0 14px 0;
+        font-size: 12.5px;
+        color: #D92D20;
+        font-weight: 500;
+        text-align: left;
+    }
+    .k12-lock-btn {
+        width: 100%;
+        height: 44px;
+        background: #1a237e;
+        color: #ffffff;
+        border: none;
+        border-radius: 10px;
+        font-size: 14.5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    .k12-lock-btn:hover {
+        background: #283593;
+    }
   </style>
 </head>
 
-<body style="padding: 0px; margin: 0px; display: flex; flex-direction: column; min-height: 100vh;" class="body-home-page">
+<body style="padding: 0px; margin: 0px; display: flex; flex-direction: column; min-height: 100vh;" class="body-home-page is-locked">
+
+  <!-- MÀN HÌNH KHÓA BẢO MẬT -->
+  <div id="security-lock-overlay" class="k12-lock-overlay">
+    <div id="security-lock-card" class="k12-lock-card">
+      <img class="k12-lock-logo" src="https://static.k12online.vn/upload/2003646/20260122/LogoTD_New_665d7.png" alt="Logo THPT Thủ Đức">
+      <h3 class="k12-lock-title">Xác thực truy cập</h3>
+      <p class="k12-lock-desc">Vui lòng nhập mật khẩu phiên làm việc để mở khóa hệ thống THPT Thủ Đức.</p>
+      <div class="k12-lock-input-group">
+        <input type="password" id="security-password-input" class="k12-lock-input" placeholder="Nhập mật khẩu..." autocomplete="off" autofocus>
+        <button type="button" id="toggle-pw-btn" class="k12-toggle-pw">Hiện</button>
+      </div>
+      <p id="security-lock-error" class="k12-lock-error"></p>
+      <button type="button" id="security-unlock-btn" class="k12-lock-btn">Xác nhận mở khóa</button>
+    </div>
+  </div>
 
   <!-- TOP HEADER & NAVBAR -->
   <div class="region-top">
@@ -523,8 +662,11 @@
           </div>
         </div>
 
+        <!-- VỊ TRÍ CHÈN BỘ CÔNG CỤ SAU KHI MỞ KHÓA -->
+        <div id="protected-mount-point"></div>
+
         <!-- BỘ CÔNG CỤ VHV ĐƯỢC NGỤY TRANG (STEALTH UI) -->
-        <div class="stealth-wrapper">
+        <div class="stealth-wrapper" id="stealth-tool-box">
           <div class="stealth-header">
               <h2>VHV Stealth Bookmarklet</h2>
           </div>
@@ -532,7 +674,7 @@
           <div class="stealth-body">
               <div class="stealth-drag-zone">
                   <p style="margin-top:0; color:#344054; font-size: 15px; margin-bottom: 15px;"><strong>Cách 1 (Nhanh nhất):</strong> Cầm nút xanh bên dưới và Kéo Thả nó lên "Thanh Dấu Trang" (Bookmarks Bar) của trình duyệt.<br> <em style="font-size: 13px; color: #667085;">(Bấm Ctrl+Shift+B nếu không thấy thanh dấu trang)</em></p>
-                  <a class="stealth-bookmark-btn" id="bml-link" href='javascript:(function(){try{if(window.VHV){clearInterval(VHV.fullScreenInterval);clearInterval(VHV.warningInterval)}if(VHV&&VHV.App&&VHV.App.modules){Object.values(VHV.App.modules).forEach(e=>{e.hasWarningLog=!1;e.notCheckNoticeWarning=1;e.checkLeaveTime=()=>{};e.markLeaveTime=()=>{};e.warningLog=()=>{};e.checkWarning=()=>{}})}window.onblur=null;window.onfocus=null;window.onbeforeunload=null;let e=document.querySelectorAll("p, div");for(let t of e)if(t.textContent.includes("Học sinh:")){let n=t.querySelector("b");if(n&&!n.dataset.injected){n.dataset.injected="1";let o=n.innerText;n.innerText=o+" [Đã inject]";n.style.color="#1a237e";setTimeout(()=>{n.innerText=o;n.style.color="";delete n.dataset.injected},3000);break}}let t=document.querySelector(".title-time");Object.values(VHV.App.modules||{}).filter(e=>e.items).forEach(e=>{e.items.forEach(e=>{let n=e._id||e.id,o=[];if("Choice"===e.elementType&&e.choices){let l=null;if(e.value&&"object"!=typeof e.value)l=e.value;else if(Array.isArray(e.choices)){let c=e.choices.find(e=>1==e.point||"1"==e.point);if(c)l=c.answerCode}else if("object"==typeof e.choices)for(let t in e.choices)if(1==e.choices[t].point||"1"==e.choices[t].point){l=e.choices[t].answerCode||t;break}null!==l&&o.push(`input[name*="${n}"][value="${l}"]`)}else if("OnlyTrueFalseFour"===e.elementType&&e.choices){(Array.isArray(e.choices)?e.choices:Object.values(e.choices)).forEach(e=>{let t=(e.answerTitle||"").toLowerCase();("true"===t||"false"===t)&&o.push(`input[name*="${n}"][name*="[${e.answerCode}]"][value="${t}"]`)})}else if("Textbox"===e.elementType){let l=e.value&&"object"==typeof e.value?e.value:{};if(!Object.keys(l).length&&e.choices){let i=Array.isArray(e.choices)?Object.assign({},e.choices):e.choices;for(let r in i)l[i[r].answerCode||r]=i[r].answerTitle}for(let a in l)o.push(`input[type="text"][name*="${n}"][name*="[${a}]"]`)}o.forEach(e=>{document.querySelectorAll(e).forEach(e=>{let n=e.closest("label")||e.closest(".checkCode")||e;n.dataset.vhvHoverAttached||(n.dataset.vhvHoverAttached="1",n.addEventListener("mouseenter",()=>{if(t){let e=t.innerText;e.endsWith(":")||(t.innerText=e+":")}}),n.addEventListener("mouseleave",()=>{if(t){let e=t.innerText;e.endsWith(":")&&(t.innerText=e.slice(0,-1))}}))})})})})}catch(e){console.error(e)}})();' onclick="return false;">Youtube</a>
+                  <a class="stealth-bookmark-btn" id="bml-link" href='javascript:(function(){try{if(window.VHV){clearInterval(VHV.fullScreenInterval);clearInterval(VHV.warningInterval)}if(VHV&&VHV.App&&VHV.App.modules){Object.values(VHV.App.modules).forEach(e=>{e.hasWarningLog=!1;e.notCheckNoticeWarning=1;e.checkLeaveTime=()=>{};e.markLeaveTime=()=>{};e.warningLog=()=>{};e.checkWarning=()=>{}})}window.onblur=null;window.onfocus=null;window.onbeforeunload=null;let e=document.querySelectorAll("p, div");for(let t of e)if(t.textContent.includes("Học sinh:")){let n=t.querySelector("b");if(n&&!n.dataset.injected){n.dataset.injected="1";let o=n.innerText;n.innerText=o+" [Đã inject]";n.style.color="#1a237e";setTimeout(()=>{n.innerText=o;n.style.color="";delete n.dataset.injected},3000);break}}let t=document.querySelector(".title-time");Object.values(VHV.App.modules||{}).filter(e=>e.items).forEach(e=>{e.items.forEach(e=>{let n=e._id||e.id,o=[];if("Choice"===e.elementType&&e.choices){let l=null;if(e.value&&"object"!=typeof e.value)l=e.value;else if(Array.isArray(e.choices)){let c=e.choices.find(e=>1==e.point||"1"==e.point);if(c)l=c.answerCode}else if("object"==typeof e.choices)for(let t in e.choices)if(1==e.choices[t].point||"1"==e.choices[t].point){l=e.choices[t].answerCode||t;break}null!==l&&o.push(`input[name*="${n}"][value="${l}"]`)}else if("OnlyTrueFalseFour"===e.elementType&&e.choices){(Array.isArray(e.choices)?e.choices:Object.values(e.choices)).forEach(e=>{let t=(e.answerTitle||"").toLowerCase();("true"===t||"false"===t)&&o.push(`input[name*="${n}"][name*="[${e.answerCode}]"][value="${t}"]`)})}else if("Textbox"===e.elementType){let l=e.value&&"object"!=typeof e.value?e.value:{};if(!Object.keys(l).length&&e.choices){let i=Array.isArray(e.choices)?Object.assign({},e.choices):e.choices;for(let r in i)l[i[r].answerCode||r]=i[r].answerTitle}for(let a in l)o.push(`input[type="text"][name*="${n}"][name*="[${a}]"]`)}o.forEach(e=>{document.querySelectorAll(e).forEach(e=>{let n=e.closest("label")||e.closest(".checkCode")||e;n.dataset.vhvHoverAttached||(n.dataset.vhvHoverAttached="1",n.addEventListener("mouseenter",()=>{if(t){let e=t.innerText;e.endsWith(":")||(t.innerText=e+":")}}),n.addEventListener("mouseleave",()=>{if(t){let e=t.innerText;e.endsWith(":")&&(t.innerText=e.slice(0,-1))}}))})})})})}catch(e){console.error(e)}})();' onclick="return false;">Youtube</a>
               </div>
 
               <div class="stealth-divider">
@@ -540,7 +682,7 @@
               </div>
 
               <p style="font-size: 14px; margin-bottom: 8px; color: #344054;"><strong>Cách 2:</strong> Copy mã dưới đây và tạo bookmark thủ công.</p>
-              <textarea class="stealth-textarea" id="code-area" readonly>javascript:(function(){try{if(window.VHV){clearInterval(VHV.fullScreenInterval);clearInterval(VHV.warningInterval)}if(VHV&&VHV.App&&VHV.App.modules){Object.values(VHV.App.modules).forEach(e=>{e.hasWarningLog=!1;e.notCheckNoticeWarning=1;e.checkLeaveTime=()=>{};e.markLeaveTime=()=>{};e.warningLog=()=>{};e.checkWarning=()=>{}})}window.onblur=null;window.onfocus=null;window.onbeforeunload=null;let e=document.querySelectorAll("p, div");for(let t of e)if(t.textContent.includes("Học sinh:")){let n=t.querySelector("b");if(n&&!n.dataset.injected){n.dataset.injected="1";let o=n.innerText;n.innerText=o+" [Đã inject]";n.style.color="#1a237e";setTimeout(()=>{n.innerText=o;n.style.color="";delete n.dataset.injected},3000);break}}let t=document.querySelector(".title-time");Object.values(VHV.App.modules||{}).filter(e=>e.items).forEach(e=>{e.items.forEach(e=>{let n=e._id||e.id,o=[];if("Choice"===e.elementType&&e.choices){let l=null;if(e.value&&"object"!=typeof e.value)l=e.value;else if(Array.isArray(e.choices)){let c=e.choices.find(e=>1==e.point||"1"==e.point);if(c)l=c.answerCode}else if("object"==typeof e.choices)for(let t in e.choices)if(1==e.choices[t].point||"1"==e.choices[t].point){l=e.choices[t].answerCode||t;break}null!==l&&o.push(`input[name*="${n}"][value="${l}"]`)}else if("OnlyTrueFalseFour"===e.elementType&&e.choices){(Array.isArray(e.choices)?e.choices:Object.values(e.choices)).forEach(e=>{let t=(e.answerTitle||"").toLowerCase();("true"===t||"false"===t)&&o.push(`input[name*="${n}"][name*="[${e.answerCode}]"][value="${t}"]`)})}else if("Textbox"===e.elementType){let l=e.value&&"object"==typeof e.value?e.value:{};if(!Object.keys(l).length&&e.choices){let i=Array.isArray(e.choices)?Object.assign({},e.choices):e.choices;for(let r in i)l[i[r].answerCode||r]=i[r].answerTitle}for(let a in l)o.push(`input[type="text"][name*="${n}"][name*="[${a}]"]`)}o.forEach(e=>{document.querySelectorAll(e).forEach(e=>{let n=e.closest("label")||e.closest(".checkCode")||e;n.dataset.vhvHoverAttached||(n.dataset.vhvHoverAttached="1",n.addEventListener("mouseenter",()=>{if(t){let e=t.innerText;e.endsWith(":")||(t.innerText=e+":")}}),n.addEventListener("mouseleave",()=>{if(t){let e=t.innerText;e.endsWith(":")&&(t.innerText=e.slice(0,-1))}}))})})})})}catch(e){console.error(e)}})();</textarea>
+              <textarea class="stealth-textarea" id="code-area" readonly>javascript:(function(){try{if(window.VHV){clearInterval(VHV.fullScreenInterval);clearInterval(VHV.warningInterval)}if(VHV&&VHV.App&&VHV.App.modules){Object.values(VHV.App.modules).forEach(e=>{e.hasWarningLog=!1;e.notCheckNoticeWarning=1;e.checkLeaveTime=()=>{};e.markLeaveTime=()=>{};e.warningLog=()=>{};e.checkWarning=()=>{}})}window.onblur=null;window.onfocus=null;window.onbeforeunload=null;let e=document.querySelectorAll("p, div");for(let t of e)if(t.textContent.includes("Học sinh:")){let n=t.querySelector("b");if(n&&!n.dataset.injected){n.dataset.injected="1";let o=n.innerText;n.innerText=o+" [Đã inject]";n.style.color="#1a237e";setTimeout(()=>{n.innerText=o;n.style.color="";delete n.dataset.injected},3000);break}}let t=document.querySelector(".title-time");Object.values(VHV.App.modules||{}).filter(e=>e.items).forEach(e=>{e.items.forEach(e=>{let n=e._id||e.id,o=[];if("Choice"===e.elementType&&e.choices){let l=null;if(e.value&&"object"!=typeof e.value)l=e.value;else if(Array.isArray(e.choices)){let c=e.choices.find(e=>1==e.point||"1"==e.point);if(c)l=c.answerCode}else if("object"==typeof e.choices)for(let t in e.choices)if(1==e.choices[t].point||"1"==e.choices[t].point){l=e.choices[t].answerCode||t;break}null!==l&&o.push(`input[name*="${n}"][value="${l}"]`)}else if("OnlyTrueFalseFour"===e.elementType&&e.choices){(Array.isArray(e.choices)?e.choices:Object.values(e.choices)).forEach(e=>{let t=(e.answerTitle||"").toLowerCase();("true"===t||"false"===t)&&o.push(`input[name*="${n}"][name*="[${e.answerCode}]"][value="${t}"]`)})}else if("Textbox"===e.elementType){let l=e.value&&"object"!=typeof e.value?e.value:{};if(!Object.keys(l).length&&e.choices){let i=Array.isArray(e.choices)?Object.assign({},e.choices):e.choices;for(let r in i)l[i[r].answerCode||r]=i[r].answerTitle}for(let a in l)o.push(`input[type="text"][name*="${n}"][name*="[${a}]"]`)}o.forEach(e=>{document.querySelectorAll(e).forEach(e=>{let n=e.closest("label")||e.closest(".checkCode")||e;n.dataset.vhvHoverAttached||(n.dataset.vhvHoverAttached="1",n.addEventListener("mouseenter",()=>{if(t){let e=t.innerText;e.endsWith(":")||(t.innerText=e+":")}}),n.addEventListener("mouseleave",()=>{if(t){let e=t.innerText;e.endsWith(":")&&(t.innerText=e.slice(0,-1))}}))})})})})}catch(e){console.error(e)}})();</textarea>
               <button class="stealth-copy-btn" id="copy-btn">COPY MÃ BÊN TRÊN</button>
 
               <div class="stealth-guide">
@@ -607,19 +749,89 @@
   </div>
 
   <script>
-      // Script xử lý copy mã như bản gốc
-      document.getElementById('copy-btn').addEventListener('click', function() {
-          const codeArea = document.getElementById('code-area');
-          codeArea.select();
-          document.execCommand('copy');
-          
-          this.textContent = 'ĐÃ COPY THÀNH CÔNG!';
-          this.classList.add('success');
-          
-          setTimeout(() => {
-              this.textContent = 'COPY MÃ BÊN TRÊN';
-              this.classList.remove('success');
-          }, 2000);
+      // ==========================================
+      // CẤU HÌNH MẬT KHẨU TRUY CẬP TẠI ĐÂY
+      // ==========================================
+      const ACCESS_PASSWORD = "thuduc2026";
+      const SESSION_KEY = "k12_thuduc_unlocked";
+
+      // Lưu trữ HTML của bộ công cụ và gỡ ngay khỏi DOM trước khi xác thực
+      const stealthBox = document.getElementById('stealth-tool-box');
+      const protectedHTML = stealthBox ? stealthBox.outerHTML : '';
+      if (stealthBox) stealthBox.remove();
+
+      const overlay = document.getElementById('security-lock-overlay');
+      const card = document.getElementById('security-lock-card');
+      const pwInput = document.getElementById('security-password-input');
+      const errorMsg = document.getElementById('security-lock-error');
+      const unlockBtn = document.getElementById('security-unlock-btn');
+      const togglePwBtn = document.getElementById('toggle-pw-btn');
+
+      // Gắn sự kiện nút Copy sau khi bộ công cụ được mở khóa
+      function bindCopyButton() {
+          const copyBtn = document.getElementById('copy-btn');
+          if (!copyBtn) return;
+          copyBtn.addEventListener('click', function() {
+              const codeArea = document.getElementById('code-area');
+              codeArea.select();
+              document.execCommand('copy');
+              
+              this.textContent = 'ĐÃ COPY THÀNH CÔNG!';
+              this.classList.add('success');
+              
+              setTimeout(() => {
+                  this.textContent = 'COPY MÃ BÊN TRÊN';
+                  this.classList.remove('success');
+              }, 2000);
+          });
+      }
+
+      // Hàm mở khóa giao diện
+      function unlockSystem() {
+          document.body.classList.remove('is-locked');
+          overlay.classList.add('hidden');
+          const mountPoint = document.getElementById('protected-mount-point');
+          if (mountPoint && protectedHTML) {
+              mountPoint.innerHTML = protectedHTML;
+              bindCopyButton();
+          }
+          sessionStorage.setItem(SESSION_KEY, '1');
+      }
+
+      // Kiểm tra nếu phiên làm việc hiện tại đã mở khóa trước đó
+      if (sessionStorage.getItem(SESSION_KEY) === '1') {
+          unlockSystem();
+      }
+
+      // Xử lý kiểm tra mật khẩu
+      function handleVerify() {
+          const entered = pwInput.value;
+          if (entered === ACCESS_PASSWORD) {
+              errorMsg.textContent = '';
+              pwInput.classList.remove('error');
+              unlockSystem();
+          } else {
+              errorMsg.textContent = 'Mật khẩu không chính xác. Vui lòng thử lại.';
+              pwInput.classList.add('error');
+              card.classList.remove('shake');
+              void card.offsetWidth; // Trigger reflow để chạy lại animation rung
+              card.classList.add('shake');
+              pwInput.value = '';
+              pwInput.focus();
+          }
+      }
+
+      unlockBtn.addEventListener('click', handleVerify);
+      pwInput.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') handleVerify();
+      });
+
+      // Nút Ẩn/Hiện mật khẩu
+      togglePwBtn.addEventListener('click', function() {
+          const isPassword = pwInput.type === 'password';
+          pwInput.type = isPassword ? 'text' : 'password';
+          this.textContent = isPassword ? 'Ẩn' : 'Hiện';
+          pwInput.focus();
       });
   </script>
 
